@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Radek Volf – kontaktní formulář / contact form. Zprávy jsou doručeny rovnou do e-mailu.">
+  <meta name="description" content="Radek Volf – kontaktní formulář. Zprávy jsou doručeny rovnou do e-mailu.">
   <title>Radek Volf – kontaktní formulář</title>
   <style>
     :root{
@@ -12,7 +12,7 @@
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
       background:var(--bg); color:var(--fg); margin:0; padding:24px;
     }
     .wrap{
@@ -44,14 +44,8 @@
     .lang-switch button{background:#00110a; border:1px solid var(--border); border-radius:8px; padding:6px 10px; color:var(--fg); cursor:pointer}
     .lang-switch button.active{border-color:var(--accent)}
     .footer{margin-top:18px; color:var(--muted); font-size:12px}
-
-    /* checkbox řádkově s textem */
-    .checkbox{
-      display:flex; align-items:center; gap:8px; margin-top:12px;
-    }
-    .checkbox input[type="checkbox"]{
-      width:auto; height:auto; accent-color:#00ff66;
-    }
+    .checkbox{display:flex; align-items:center; gap:8px; margin-top:12px;}
+    .checkbox input[type="checkbox"]{width:auto; height:auto; accent-color:#00ff66;}
   </style>
 </head>
 <body>
@@ -64,13 +58,11 @@
     <h1 data-i18n="title">Radek Volf – kontaktní formulář</h1>
     <p class="hint" data-i18n="subtitle">Nech vzkaz – přijde mi rovnou do e-mailu.</p>
 
-    <!-- FormSubmit: https://formsubmit.co/ -->
     <form action="https://formsubmit.co/trax@seznam.cz" method="POST" aria-label="Contact form">
-      <!-- FormSubmit options -->
       <input type="hidden" name="_subject" value="Nová zpráva z kontaktního formuláře" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="true" />
-      <input type="hidden" name="_next" value="thanks.html" />
+      <input type="hidden" name="_next" value="https://trax077.github.io/web/thanks.html" />
 
       <!-- Honeypot -->
       <div class="hp" aria-hidden="true">
@@ -80,22 +72,18 @@
       <div class="row">
         <div>
           <label for="name"><span data-i18n="label_name">Jméno</span> <span class="required">*</span></label>
-          <input id="name" name="name" type="text" required minlength="2" maxlength="80"
-                 autocomplete="name" aria-required="true" />
+          <input id="name" name="name" type="text" required minlength="2" maxlength="80" autocomplete="name" aria-required="true" />
         </div>
         <div>
           <label for="email"><span data-i18n="label_email">E-mail (pro odpověď)</span></label>
-          <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
-                 placeholder="" aria-describedby="emailHelp" />
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="" aria-describedby="emailHelp" />
           <div id="emailHelp" class="small" data-i18n="email_hint">Volitelné. Slouží jen k odpovědi na vaši zprávu.</div>
         </div>
       </div>
 
       <label for="message"><span data-i18n="label_message">Zpráva</span> <span class="required">*</span></label>
-      <textarea id="message" name="message" required minlength="5" maxlength="5000"
-                aria-required="true"></textarea>
+      <textarea id="message" name="message" required minlength="5" maxlength="5000" aria-required="true"></textarea>
 
-      <!-- Checkbox: políčko na začátku věty -->
       <div class="checkbox">
         <input type="checkbox" id="gdpr" required aria-required="true" />
         <label for="gdpr" class="small" data-i18n="gdpr">
@@ -115,7 +103,6 @@
   </div>
 
   <script>
-    // Jednoduché i18n (CZ/EN)
     const dict = {
       cs: {
         title: "Radek Volf – kontaktní formulář",
@@ -163,8 +150,6 @@
 
     btnCs.addEventListener("click", () => setLang("cs"));
     btnEn.addEventListener("click", () => setLang("en"));
-
-    // Start v češtině
     setLang("cs");
   </script>
 </body>
