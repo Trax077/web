@@ -3,18 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Návštěvní kniha / Guestbook – vzkazy posílané rovnou do e-mailu.">
-  <title>Návštěvní kniha · Guestbook → E-mail</title>
+  <meta name="description" content="Radek Volf – kontaktní formulář / contact form. Zprávy jsou doručeny rovnou do e-mailu.">
+  <title>Radek Volf – kontaktní formulář</title>
   <style>
     :root{
-      --bg:#000000;         /* black */
-      --fg:#00ff66;         /* matrix green */
-      --muted:#25a35a;      /* dim green */
-      --card:#0a0a0a;       /* near-black */
-      --border:#0f3d26;     /* dark green */
-      --accent:#00ff66;     /* same green for accents */
-      --accent-strong:#00cc52;
-      --shadow:0 0 24px rgba(0,255,102,.1);
+      --bg:#000000; --fg:#00ff66; --muted:#25a35a; --card:#0a0a0a; --border:#0f3d26; --accent:#00ff66;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -24,27 +17,23 @@
     }
     .wrap{
       max-width:720px; margin:0 auto; background:var(--card);
-      border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow); padding:24px;
+      border:1px solid var(--border); border-radius:12px; padding:24px;
     }
-    h1{margin:0 0 12px; font-size:26px; line-height:1.25; text-shadow:0 0 6px rgba(0,255,102,.35)}
+    h1{margin:0 0 12px; font-size:26px; line-height:1.25}
     p.hint{color:var(--muted); margin-top:0}
     label{display:block; margin:12px 0 6px}
     input,textarea{
       width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; background:#030303; color:var(--fg);
-      outline:none; transition:border-color .15s ease, box-shadow .15s ease;
+      outline:none;
     }
-    input:focus, textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(0,255,102,.15)}
     textarea{min-height:140px; resize:vertical}
     .row{display:flex; gap:12px; flex-wrap:wrap}
     .row > div{flex:1 1 240px}
     .actions{display:flex; align-items:center; justify-content:space-between; margin-top:14px; gap:12px; flex-wrap:wrap}
     button{
       border:1px solid var(--accent); border-radius:10px; padding:12px 16px; cursor:pointer; font-weight:700;
-      background:#001a0f; color:var(--fg); text-shadow:0 0 4px rgba(0,255,102,.35);
-      transition:transform .05s ease, box-shadow .15s ease, background .2s ease;
+      background:#001a0f; color:var(--fg);
     }
-    button:hover{background:#002616; box-shadow:0 0 18px rgba(0,255,102,.15)}
-    button:active{transform:translateY(1px)}
     button[type=submit]{background:#00331f}
     .small{font-size:13px; color:var(--muted)}
     a{color:var(--accent); text-decoration:none}
@@ -52,9 +41,17 @@
     .hp{position:absolute; left:-9999px; opacity:0; height:0; width:0; overflow:hidden}
     .required{color:var(--accent)}
     .lang-switch{display:flex; gap:8px; margin-bottom:10px}
-    .lang-switch button{background:#00110a}
-    .lang-switch button.active{background:#00331f}
+    .lang-switch button{background:#00110a; border:1px solid var(--border); border-radius:8px; padding:6px 10px; color:var(--fg); cursor:pointer}
+    .lang-switch button.active{border-color:var(--accent)}
     .footer{margin-top:18px; color:var(--muted); font-size:12px}
+
+    /* checkbox řádkově s textem */
+    .checkbox{
+      display:flex; align-items:center; gap:8px; margin-top:12px;
+    }
+    .checkbox input[type="checkbox"]{
+      width:auto; height:auto; accent-color:#00ff66;
+    }
   </style>
 </head>
 <body>
@@ -64,13 +61,13 @@
       <button type="button" id="btn-en" aria-pressed="false">English</button>
     </div>
 
-    <h1 data-i18n="title">Návštěvní kniha</h1>
+    <h1 data-i18n="title">Radek Volf – kontaktní formulář</h1>
     <p class="hint" data-i18n="subtitle">Nech vzkaz – přijde mi rovnou do e-mailu.</p>
 
     <!-- FormSubmit: https://formsubmit.co/ -->
-    <form action="https://formsubmit.co/trax@seznam.cz" method="POST" aria-label="Guestbook form">
+    <form action="https://formsubmit.co/trax@seznam.cz" method="POST" aria-label="Contact form">
       <!-- FormSubmit options -->
-      <input type="hidden" name="_subject" value="Nový vzkaz z guestbooku" />
+      <input type="hidden" name="_subject" value="Nová zpráva z kontaktního formuláře" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="true" />
       <input type="hidden" name="_next" value="thanks.html" />
@@ -90,7 +87,7 @@
           <label for="email"><span data-i18n="label_email">E-mail (pro odpověď)</span></label>
           <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
                  placeholder="" aria-describedby="emailHelp" />
-          <div id="emailHelp" class="small" data-i18n="email_hint">Volitelné. Slouží jen k odpovědi na váš vzkaz.</div>
+          <div id="emailHelp" class="small" data-i18n="email_hint">Volitelné. Slouží jen k odpovědi na vaši zprávu.</div>
         </div>
       </div>
 
@@ -98,14 +95,17 @@
       <textarea id="message" name="message" required minlength="5" maxlength="5000"
                 aria-required="true"></textarea>
 
-      <label class="small">
-        <input type="checkbox" required aria-required="true" />
-        <span data-i18n="gdpr">Souhlasím se zpracováním odeslaných údajů za účelem zobrazení/odpovědi.</span>
-      </label>
+      <!-- Checkbox: políčko na začátku věty -->
+      <div class="checkbox">
+        <input type="checkbox" id="gdpr" required aria-required="true" />
+        <label for="gdpr" class="small" data-i18n="gdpr">
+          Souhlasím se zpracováním odeslaných údajů za účelem zobrazení/odpovědi.
+        </label>
+      </div>
 
       <div class="actions">
         <button type="reset" data-i18n="btn_reset">Vymazat</button>
-        <button type="submit" data-i18n="btn_submit">Odeslat vzkaz</button>
+        <button type="submit" data-i18n="btn_submit">Odeslat zprávu</button>
       </div>
     </form>
 
@@ -118,19 +118,19 @@
     // Jednoduché i18n (CZ/EN)
     const dict = {
       cs: {
-        title: "Návštěvní kniha",
+        title: "Radek Volf – kontaktní formulář",
         subtitle: "Nech vzkaz – přijde mi rovnou do e-mailu.",
         label_name: "Jméno",
         label_email: "E-mail (pro odpověď)",
-        email_hint: "Volitelné. Slouží jen k odpovědi na váš vzkaz.",
+        email_hint: "Volitelné. Slouží jen k odpovědi na vaši zprávu.",
         label_message: "Zpráva",
         gdpr: "Souhlasím se zpracováním odeslaných údajů za účelem zobrazení/odpovědi.",
         btn_reset: "Vymazat",
-        btn_submit: "Odeslat vzkaz",
+        btn_submit: "Odeslat zprávu",
         footer: "Běží na GitHub Pages · Odesílání zajišťuje FormSubmit."
       },
       en: {
-        title: "Guestbook",
+        title: "Radek Volf — Contact Form",
         subtitle: "Leave a message — it will arrive straight to my email.",
         label_name: "Name",
         label_email: "Email (for reply)",
