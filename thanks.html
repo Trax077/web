@@ -6,14 +6,26 @@
   <meta http-equiv="refresh" content="8; url=./" />
   <title>Děkujeme · Thank you</title>
   <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#f6f7f9;margin:0;padding:24px}
-    .wrap{max-width:720px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.06);padding:24px;text-align:center}
-    h1{margin:0 0 10px}
-    p{color:#555}
-    .lang-switch{display:flex;gap:8px;justify-content:center;margin-bottom:10px}
-    .lang-switch button{border:0;border-radius:10px;padding:8px 12px;cursor:pointer;background:#eef1f5}
-    .lang-switch button.active{background:#0d6efd;color:#fff}
-    a{color:#0d6efd;text-decoration:none}
+    :root{
+      --bg:#000; --fg:#00ff66; --muted:#25a35a; --card:#0a0a0a; --border:#0f3d26; --accent:#00ff66;
+    }
+    body{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background:var(--bg); color:var(--fg); margin:0; padding:24px
+    }
+    .wrap{
+      max-width:720px; margin:0 auto; background:var(--card); border:1px solid var(--border);
+      border-radius:12px; box-shadow:0 0 24px rgba(0,255,102,.1); padding:24px; text-align:center
+    }
+    h1{margin:0 0 10px; text-shadow:0 0 6px rgba(0,255,102,.35)}
+    p{color:var(--muted)}
+    .lang-switch{display:flex; gap:8px; justify-content:center; margin-bottom:10px}
+    .lang-switch button{
+      border:1px solid var(--accent); border-radius:10px; padding:8px 12px; cursor:pointer;
+      background:#001a0f; color:var(--fg)
+    }
+    .lang-switch button.active{background:#00331f}
+    a{color:var(--accent); text-decoration:none}
     a:hover{text-decoration:underline}
   </style>
 </head>
@@ -27,7 +39,6 @@
     <h1 data-i18n="title">Děkujeme!</h1>
     <p data-i18n="text">Váš vzkaz byl odeslán. Brzy se ozveme.</p>
     <p data-i18n="redirect">Za pár sekund budete přesměrováni zpět. <a href="./">Zpět na hlavní stránku</a>.</p>
-
   </div>
 
   <script>
@@ -35,12 +46,12 @@
       cs: {
         title: "Děkujeme!",
         text: "Váš vzkaz byl odeslán. Brzy se ozveme.",
-        redirect: "Za pár sekund budete přesměrováni zpět. <a href=\"./\">Zpět na hlavní stránku</a>."
+        redirect: 'Za pár sekund budete přesměrováni zpět. <a href="./">Zpět na hlavní stránku</a>.'
       },
       en: {
         title: "Thank you!",
         text: "Your message has been sent. We’ll get back to you soon.",
-        redirect: "You’ll be redirected shortly. <a href=\"./\">Back to the homepage</a>."
+        redirect: 'You’ll be redirected shortly. <a href="./">Back to the homepage</a>.'
       }
     };
 
@@ -52,12 +63,8 @@
       document.documentElement.lang = lang;
       els.forEach(el => {
         const key = el.getAttribute("data-i18n");
-        // Pozor: tento element obsahuje HTML (odkaz), proto použijeme innerHTML
-        if(key === "redirect"){
-          el.innerHTML = dict[lang][key];
-        } else {
-          el.textContent = dict[lang][key];
-        }
+        if(key === "redirect"){ el.innerHTML = dict[lang][key]; }
+        else { el.textContent = dict[lang][key]; }
       });
       btnCs.classList.toggle("active", lang === "cs");
       btnEn.classList.toggle("active", lang === "en");
