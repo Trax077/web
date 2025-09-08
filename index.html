@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Guestbook → E-mail</title>
+  <style>
+    body{font-family:system-ui,Arial,sans-serif;background:#f6f7f9;margin:0;padding:24px;}
+    .wrap{max-width:640px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.06);padding:24px;}
+    h1{margin:0 0 12px;font-size:24px}
+    p.hint{color:#555;margin-top:0}
+    label{display:block;margin:12px 0 6px}
+    input,textarea{width:100%;padding:10px 12px;border:1px solid #dcdfe4;border-radius:8px;font:inherit}
+    textarea{min-height:140px;resize:vertical}
+    .row{display:flex;gap:12px}
+    .row > div{flex:1}
+    .actions{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+    button{border:0;border-radius:10px;padding:12px 16px;cursor:pointer;font-weight:600}
+    button[type=submit]{background:#0d6efd;color:#fff}
+    button[type=reset]{background:#eef1f5}
+    .small{font-size:13px;color:#666}
+    /* honeypot: schované pole pro roboty */
+    .hp{position:absolute;left:-9999px;opacity:0;height:0;width:0;overflow:hidden}
+    .required{color:#cc0000}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Návštěvní kniha</h1>
+    <p class="hint">Nech vzkaz – přijde mi rovnou do e-mailu.</p>
+
+    <!--
+      FormSubmit: https://formsubmit.co/
+      1) Nahraď akci svojí e-mail adresou.
+      2) První odeslání si vyžádá potvrzení (dojde ti ověřovací mail).
+    -->
+    <form action="https://formsubmit.co/trax@seznam.cz" method="POST">
+      <!-- FormSubmit nastavení -->
+      <input type="hidden" name="_subject" value="Nový vzkaz z guestbooku" />
+      <input type="hidden" name="_template" value="table" />
+      <!-- zapne jednoduchou CAPTCHA FormSubmitu -->
+      <input type="hidden" name="_captcha" value="true" />
+      <!-- po odeslání přesměruj (volitelné) -->
+      <!-- <input type="hidden" name="_next" value="https://github.com/Trax077/web/dekujeme.html" /> -->
+
+      <!-- honeypot proti robotům: pokud není prázdné, zprávu ignoruj -->
+      <div class="hp">
+        <label>Nechte prázdné: <input type="text" name="_honey" /></label>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="name">Jméno <span class="required">*</span></label>
+          <input id="name" name="name" type="text" required />
+        </div>
+        <div>
+          <label for="email">E-mail (pro odpověď)</label>
+          <input id="email" name="email" type="email" placeholder="volitelné" />
+        </div>
+      </div>
+
+      <label for="message">Zpráva <span class="required">*</span></label>
+      <textarea id="message" name="message" required></textarea>
+
+      <label class="small">
+        <input type="checkbox" required />
+        Souhlasím se zpracováním odeslaných údajů za účelem zobrazení/odpovědi.
+      </label>
+
+      <div class="actions">
+        <button type="reset">Vymazat</button>
+        <button type="submit">Odeslat vzkaz</button>
+      </div>
+
+      <p class="small">Antispam: honeypot + FormSubmit CAPTCHA. Pokud by spam přibyl,
+        lze přidat Google reCAPTCHA v2 nebo další serverovou kontrolu přes placené služby.</p>
+    </form>
+  </div>
+</body>
+</html>
