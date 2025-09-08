@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta http-equiv="refresh" content="8; url=./" />
+  <title>Děkujeme · Thank you</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#f6f7f9;margin:0;padding:24px}
+    .wrap{max-width:720px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.06);padding:24px;text-align:center}
+    h1{margin:0 0 10px}
+    p{color:#555}
+    .lang-switch{display:flex;gap:8px;justify-content:center;margin-bottom:10px}
+    .lang-switch button{border:0;border-radius:10px;padding:8px 12px;cursor:pointer;background:#eef1f5}
+    .lang-switch button.active{background:#0d6efd;color:#fff}
+    a{color:#0d6efd;text-decoration:none}
+    a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="lang-switch" aria-label="Language switch">
+      <button type="button" id="btn-cs" class="active" aria-pressed="true">Čeština</button>
+      <button type="button" id="btn-en" aria-pressed="false">English</button>
+    </div>
+
+    <h1 data-i18n="title">Děkujeme!</h1>
+    <p data-i18n="text">Váš vzkaz byl odeslán. Brzy se ozveme.</p>
+    <p data-i18n="redirect">Za pár sekund budete přesměrováni zpět. <a href="./">Zpět na hlavní stránku</a>.</p>
+
+  </div>
+
+  <script>
+    const dict = {
+      cs: {
+        title: "Děkujeme!",
+        text: "Váš vzkaz byl odeslán. Brzy se ozveme.",
+        redirect: "Za pár sekund budete přesměrováni zpět. <a href=\"./\">Zpět na hlavní stránku</a>."
+      },
+      en: {
+        title: "Thank you!",
+        text: "Your message has been sent. We’ll get back to you soon.",
+        redirect: "You’ll be redirected shortly. <a href=\"./\">Back to the homepage</a>."
+      }
+    };
+
+    const els = document.querySelectorAll("[data-i18n]");
+    const btnCs = document.getElementById("btn-cs");
+    const btnEn = document.getElementById("btn-en");
+
+    function setLang(lang){
+      document.documentElement.lang = lang;
+      els.forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        // Pozor: tento element obsahuje HTML (odkaz), proto použijeme innerHTML
+        if(key === "redirect"){
+          el.innerHTML = dict[lang][key];
+        } else {
+          el.textContent = dict[lang][key];
+        }
+      });
+      btnCs.classList.toggle("active", lang === "cs");
+      btnEn.classList.toggle("active", lang === "en");
+      btnCs.setAttribute("aria-pressed", lang === "cs");
+      btnEn.setAttribute("aria-pressed", lang === "en");
+    }
+
+    btnCs.addEventListener("click", () => setLang("cs"));
+    btnEn.addEventListener("click", () => setLang("en"));
+    setLang("cs");
+  </script>
+</body>
+</html>
