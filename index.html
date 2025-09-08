@@ -50,18 +50,13 @@
 
     /* tabulky */
     .table-wrap{overflow-x:auto; border:1px solid var(--border); border-radius:8px}
-    table{width:100%; border-collapse:collapse; min-width:480px}
+    table{width:100%; border-collapse:collapse; min-width:420px}
     thead{background:#071a12}
     th, td{padding:10px 12px; border-bottom:1px solid var(--border); text-align:left; vertical-align:top}
     th{font-weight:700}
     tr:last-child td{border-bottom:0}
     .mono{font-family:inherit; word-break:break-word}
     .right{text-align:right}
-    .muted{color:var(--muted)}
-    .pill{
-      display:inline-block; padding:4px 8px; border:1px solid var(--border); border-radius:999px; font-size:12px; line-height:1;
-      background:#03180f;
-    }
   </style>
 </head>
 <body>
@@ -116,8 +111,8 @@
 
     <!-- DOWNLOADS -->
     <h2 data-i18n="downloads_title">Ke stažení</h2>
-    <p class="small muted" data-i18n="downloads_hint">
-      Soubory se načítají automaticky z adresáře <span class="mono pill">/downloads</span> tohoto repozitáře.
+    <p class="small" style="color:var(--muted)" data-i18n="downloads_hint">
+      Soubory se načítají automaticky z adresáře <span class="mono">/downloads</span>.
     </p>
     <div class="table-wrap" id="downloads-wrap">
       <table aria-describedby="downloads-hint">
@@ -125,11 +120,10 @@
           <tr>
             <th data-i18n="th_name">Název</th>
             <th class="right" data-i18n="th_size">Velikost</th>
-            <th data-i18n="th_links">Odkazy</th>
           </tr>
         </thead>
         <tbody id="downloads-body">
-          <tr><td colspan="3" class="muted" data-i18n="loading">Načítám…</td></tr>
+          <tr><td colspan="2" class="small" style="color:var(--muted)" data-i18n="loading">Načítám…</td></tr>
         </tbody>
       </table>
     </div>
@@ -157,6 +151,10 @@
             <td class="mono" data-i18n="link_steam_label">Steam: Universe Has No Favorites</td>
             <td><a href="https://store.steampowered.com/app/2625600/Universe_Has_No_Favorites" target="_blank" rel="noopener">store.steampowered.com/app/2625600/…</a></td>
           </tr>
+          <tr>
+            <td class="mono" data-i18n="link_walker_label">Walker & Volf</td>
+            <td><a href="https://www.walkeravolf.cz/" target="_blank" rel="noopener">https://www.walkeravolf.cz/</a></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -181,20 +179,17 @@
         btn_submit: "Odeslat zprávu",
         footer: "Běží na GitHub Pages · Odesílání zajišťuje FormSubmit.",
         downloads_title: "Ke stažení",
-        downloads_hint: "Soubory se načítají automaticky z adresáře /downloads tohoto repozitáře.",
+        downloads_hint: "Soubory se načítají automaticky z adresáře /downloads.",
         th_name: "Název",
         th_size: "Velikost",
-        th_links: "Odkazy",
         loading: "Načítám…",
-        link_pages: "GitHub Pages",
         browse_github: "Prohlédnout ve webovém rozhraní GitHubu:",
         links_title: "Odkazy",
         th_label: "Popis",
         th_url: "URL",
         link_home_label: "Web (GitHub Pages)",
         link_steam_label: "Steam: Universe Has No Favorites",
-        link_view: "Zobrazit",
-        link_download: "Stáhnout (raw)"
+        link_walker_label: "Walker & Volf"
       },
       en: {
         title: "Radek Volf — Contact Form",
@@ -208,20 +203,17 @@
         btn_submit: "Send message",
         footer: "Powered by GitHub Pages · Submission handled by FormSubmit.",
         downloads_title: "Downloads",
-        downloads_hint: "Files are loaded automatically from the /downloads directory of this repository.",
+        downloads_hint: "Files are loaded automatically from the /downloads directory.",
         th_name: "Name",
         th_size: "Size",
-        th_links: "Links",
         loading: "Loading…",
-        link_pages: "GitHub Pages",
         browse_github: "Browse on GitHub:",
         links_title: "Links",
         th_label: "Label",
         th_url: "URL",
         link_home_label: "Website (GitHub Pages)",
         link_steam_label: "Steam: Universe Has No Favorites",
-        link_view: "View",
-        link_download: "Download (raw)"
+        link_walker_label: "Walker & Volf"
       }
     };
 
@@ -233,7 +225,6 @@
       document.documentElement.lang = lang;
       els.forEach(el => {
         const key = el.getAttribute("data-i18n");
-        // některé texty jdou do textContent, některé obsahují HTML (žádný z těchto tady neobsahuje HTML)
         el.textContent = dict[lang][key] || el.textContent;
       });
       btnCs.classList.toggle("active", lang === "cs");
@@ -242,7 +233,6 @@
       btnEn.setAttribute("aria-pressed", lang === "en");
       const email = document.getElementById("email");
       if(email){ email.placeholder = lang === "cs" ? "volitelné" : "optional"; }
-      // přepnout i dynamicky generované odkazy
       renderDownloads(lang);
     }
 
@@ -262,7 +252,6 @@
       if(!res.ok) throw new Error(`HTTP ${res.status}`);
       /** @type {{name:string,path:string,size:number,download_url:string,type:string}[]} */
       const data = await res.json();
-      // necháme jen soubory (type === 'file')
       return data.filter(x => x.type === 'file');
     }
 
@@ -274,48 +263,36 @@
     }
 
     function pagesUrlFor(name){
-      // odkaz přes GitHub Pages (pokud je soubor publikován v /downloads)
+      // odkaz přes GitHub Pages (ne raw)
       return `${PAGES_BASE}/${GH_PATH}/${encodeURIComponent(name)}`;
     }
 
     function renderDownloads(lang){
-      const t = (k)=>dict[lang][k]||k;
       const tbody = document.getElementById("downloads-body");
-      if(!tbody) return;
-      // Pokud už je načteno, nepřepisuj ručně přidané věci – jen když máme cache
-      if(window.__downloads_cache){
-        tbody.innerHTML = "";
-        window.__downloads_cache.forEach(item=>{
-          const tr = document.createElement("tr");
-          const tdName = document.createElement("td");
-          const tdSize = document.createElement("td");
-          const tdLinks= document.createElement("td");
+      if(!tbody || !window.__downloads_cache) return;
+      tbody.innerHTML = "";
+      window.__downloads_cache.forEach(item=>{
+        const tr = document.createElement("tr");
 
-          tdName.className = "mono";
-          tdName.textContent = item.name;
+        const tdName = document.createElement("td");
+        tdName.className = "mono";
+        const a = document.createElement("a");
+        a.href = pagesUrlFor(item.name);
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = item.name;   // pouze klikací název
+        tdName.appendChild(a);
 
-          tdSize.className = "right";
-          tdSize.textContent = humanSize(item.size);
+        const tdSize = document.createElement("td");
+        tdSize.className = "right";
+        tdSize.textContent = humanSize(item.size);
 
-          const pagesA = document.createElement("a");
-          pagesA.href = pagesUrlFor(item.name);
-          pagesA.target = "_blank";
-          pagesA.rel = "noopener";
-          pagesA.textContent = t("link_view");
+        tr.append(tdName, tdSize);
+        tbody.appendChild(tr);
+      });
 
-          const sep = document.createTextNode(" · ");
-
-          const rawA = document.createElement("a");
-          rawA.href = item.download_url; // raw.githubusercontent
-          rawA.target = "_blank";
-          rawA.rel = "noopener";
-          rawA.textContent = t("link_download");
-
-          tdLinks.append(pagesA, sep, rawA);
-
-          tr.append(tdName, tdSize, tdLinks);
-          tbody.appendChild(tr);
-        });
+      if(window.__downloads_cache.length === 0){
+        tbody.innerHTML = `<tr><td colspan="2" class="small" style="color:var(--muted)">—</td></tr>`;
       }
     }
 
@@ -325,11 +302,8 @@
         const items = await fetchDownloads();
         window.__downloads_cache = items;
         renderDownloads(document.documentElement.lang || "cs");
-        if(items.length === 0){
-          tbody.innerHTML = `<tr><td colspan="3" class="muted">—</td></tr>`;
-        }
       }catch(err){
-        tbody.innerHTML = `<tr><td colspan="3" class="muted">⚠ ${err}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="2" class="small" style="color:var(--muted)">⚠ ${err}</td></tr>`;
       }
     }
 
