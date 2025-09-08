@@ -3,76 +3,153 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Guestbook → E-mail</title>
+  <meta name="description" content="Návštěvní kniha / Guestbook – vzkazy posílané rovnou na e-mail.">
+  <title>Návštěvní kniha · Guestbook → E-mail</title>
   <style>
-    body{font-family:system-ui,Arial,sans-serif;background:#f6f7f9;margin:0;padding:24px;}
-    .wrap{max-width:640px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.06);padding:24px;}
-    h1{margin:0 0 12px;font-size:24px}
-    p.hint{color:#555;margin-top:0}
+    :root{--bg:#f6f7f9;--fg:#111;--muted:#555;--card:#fff;--border:#dcdfe4;--accent:#0d6efd;}
+    *{box-sizing:border-box}
+    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--fg);margin:0;padding:24px;}
+    .wrap{max-width:720px;margin:0 auto;background:var(--card);border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.06);padding:24px;}
+    h1{margin:0 0 12px;font-size:26px;line-height:1.25}
+    p.hint{color:var(--muted);margin-top:0}
     label{display:block;margin:12px 0 6px}
-    input,textarea{width:100%;padding:10px 12px;border:1px solid #dcdfe4;border-radius:8px;font:inherit}
+    input,textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font:inherit}
     textarea{min-height:140px;resize:vertical}
-    .row{display:flex;gap:12px}
-    .row > div{flex:1}
-    .actions{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .row > div{flex:1 1 240px}
+    .actions{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:12px;flex-wrap:wrap}
     button{border:0;border-radius:10px;padding:12px 16px;cursor:pointer;font-weight:600}
-    button[type=submit]{background:#0d6efd;color:#fff}
+    button[type=submit]{background:var(--accent);color:#fff}
     button[type=reset]{background:#eef1f5}
     .small{font-size:13px;color:#666}
-    /* honeypot: schované pole pro roboty */
     .hp{position:absolute;left:-9999px;opacity:0;height:0;width:0;overflow:hidden}
     .required{color:#cc0000}
+    .lang-switch{display:flex;gap:8px;margin-bottom:10px}
+    .lang-switch button{background:#eef1f5}
+    .lang-switch button.active{background:var(--accent);color:#fff}
+    .footer{margin-top:18px;color:#777;font-size:12px}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Návštěvní kniha</h1>
-    <p class="hint">Nech vzkaz – přijde mi rovnou do e-mailu.</p>
+  <div class="wrap" role="main">
+    <div class="lang-switch" aria-label="Language switch">
+      <button type="button" id="btn-cs" class="active" aria-pressed="true">Čeština</button>
+      <button type="button" id="btn-en" aria-pressed="false">English</button>
+    </div>
 
-    <!--
-      FormSubmit: https://formsubmit.co/
-      1) Nahraď akci svojí e-mail adresou.
-      2) První odeslání si vyžádá potvrzení (dojde ti ověřovací mail).
-    -->
-    <form action="https://formsubmit.co/trax@seznam.cz" method="POST">
-      <!-- FormSubmit nastavení -->
+    <h1 data-i18n="title">Návštěvní kniha</h1>
+    <p class="hint" data-i18n="subtitle">Nech vzkaz – přijde mi rovnou do e-mailu.</p>
+
+    <!-- FormSubmit: https://formsubmit.co/ -->
+    <form action="https://formsubmit.co/trax@seznam.cz" method="POST" aria-label="Guestbook form">
+      <!-- FormSubmit options -->
       <input type="hidden" name="_subject" value="Nový vzkaz z guestbooku" />
       <input type="hidden" name="_template" value="table" />
-      <!-- zapne jednoduchou CAPTCHA FormSubmitu -->
       <input type="hidden" name="_captcha" value="true" />
-      <!-- po odeslání přesměruj (volitelné) -->
-      <!-- <input type="hidden" name="_next" value="https://trax077.github.io/web/" /> -->
+      <input type="hidden" name="_next" value="thanks.html" />
 
-      <!-- honeypot proti robotům: pokud není prázdné, zprávu ignoruj -->
-      <div class="hp">
-        <label>Nechte prázdné: <input type="text" name="_honey" /></label>
+      <!-- Honeypot (must stay empty) -->
+      <div class="hp" aria-hidden="true">
+        <label>Leave empty: <input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label>
       </div>
 
       <div class="row">
         <div>
-          <label for="name">Jméno <span class="required">*</span></label>
-          <input id="name" name="name" type="text" required />
+          <label for="name"><span data-i18n="label_name">Jméno</span> <span class="required">*</span></label>
+          <input id="name" name="name" type="text" required minlength="2" maxlength="80"
+                 autocomplete="name" aria-required="true" />
         </div>
         <div>
-          <label for="email">E-mail (pro odpověď)</label>
-          <input id="email" name="email" type="email" placeholder="volitelné" />
+          <label for="email"><span data-i18n="label_email">E-mail (pro odpověď)</span></label>
+          <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
+                 placeholder="" aria-describedby="emailHelp" />
+          <div id="emailHelp" class="small" data-i18n="email_hint">Volitelné. Slouží jen k odpovědi na váš vzkaz.</div>
         </div>
       </div>
 
-      <label for="message">Zpráva <span class="required">*</span></label>
-      <textarea id="message" name="message" required></textarea>
+      <label for="message"><span data-i18n="label_message">Zpráva</span> <span class="required">*</span></label>
+      <textarea id="message" name="message" required minlength="5" maxlength="5000"
+                aria-required="true"></textarea>
 
       <label class="small">
-        <input type="checkbox" required />
-        Souhlasím se zpracováním odeslaných údajů za účelem zobrazení/odpovědi.
+        <input type="checkbox" required aria-required="true" />
+        <span data-i18n="gdpr">Souhlasím se zpracováním odeslaných údajů za účelem zobrazení/odpovědi.</span>
       </label>
 
       <div class="actions">
-        <button type="reset">Vymazat</button>
-        <button type="submit">Odeslat vzkaz</button>
+        <button type="reset" data-i18n="btn_reset">Vymazat</button>
+        <button type="submit" data-i18n="btn_submit">Odeslat vzkaz</button>
       </div>
 
-      </form>
+      <p class="small" data-i18n="antispam">
+        Antispam: honeypot + FormSubmit CAPTCHA. Pokud by spam přibyl, lze přidat Google reCAPTCHA v2.
+      </p>
+    </form>
+
+    <div class="footer">
+      <span data-i18n="footer">Běží na GitHub Pages · Odesílání zajišťuje FormSubmit.</span>
+    </div>
   </div>
+
+  <script>
+    // Jednoduché i18n
+    const dict = {
+      cs: {
+        title: "Návštěvní kniha",
+        subtitle: "Nech vzkaz – přijde mi rovnou do e-mailu.",
+        label_name: "Jméno",
+        label_email: "E-mail (pro odpověď)",
+        email_hint: "Volitelné. Slouží jen k odpovědi na váš vzkaz.",
+        label_message: "Zpráva",
+        gdpr: "Souhlasím se zpracováním odeslaných údajů za účelem zobrazení/odpovědi.",
+        btn_reset: "Vymazat",
+        btn_submit: "Odeslat vzkaz",
+        antispam: "Antispam: honeypot + FormSubmit CAPTCHA. Pokud by spam přibyl, lze přidat Google reCAPTCHA v2.",
+        footer: "Běží na GitHub Pages · Odesílání zajišťuje FormSubmit."
+      },
+      en: {
+        title: "Guestbook",
+        subtitle: "Leave a message — it will arrive straight to my email.",
+        label_name: "Name",
+        label_email: "Email (for reply)",
+        email_hint: "Optional. Used only to reply to your message.",
+        label_message: "Message",
+        gdpr: "I consent to processing my submitted data for displaying/replying purposes.",
+        btn_reset: "Clear",
+        btn_submit: "Send message",
+        antispam: "Antispam: honeypot + FormSubmit CAPTCHA. If spam increases, add Google reCAPTCHA v2.",
+        footer: "Powered by GitHub Pages · Submission handled by FormSubmit."
+      }
+    };
+
+    const els = document.querySelectorAll("[data-i18n]");
+    const btnCs = document.getElementById("btn-cs");
+    const btnEn = document.getElementById("btn-en");
+
+    function setLang(lang){
+      document.documentElement.lang = lang;
+      els.forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        el.textContent = dict[lang][key] || el.textContent;
+      });
+      btnCs.classList.toggle("active", lang === "cs");
+      btnEn.classList.toggle("active", lang === "en");
+      btnCs.setAttribute("aria-pressed", lang === "cs");
+      btnEn.setAttribute("aria-pressed", lang === "en");
+      // Přepnout placeholder dle jazyka
+      const email = document.getElementById("email");
+      if(email){
+        email.placeholder = lang === "cs" ? "volitelné" : "optional";
+      }
+    }
+
+    btnCs.addEventListener("click", () => setLang("cs"));
+    btnEn.addEventListener("click", () => setLang("en"));
+
+    // Start v češtině
+    setLang("cs");
+  </script>
 </body>
 </html>
