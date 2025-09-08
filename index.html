@@ -111,7 +111,7 @@
 
     <!-- DOWNLOADS -->
     <h2 data-i18n="downloads_title">Ke stažení</h2>
-    <p class="small" style="color:var(--muted)" data-i18n="downloads_hint">
+    <p id="downloads-hint" class="small" style="color:var(--muted)" data-i18n="downloads_hint">
       Soubory se načítají automaticky z adresáře <span class="mono">/downloads</span>.
     </p>
     <div class="table-wrap" id="downloads-wrap">
@@ -158,7 +158,7 @@
           <tr>
             <td class="mono" data-i18n="link_youtube_label">YouTube kanál</td>
             <td><a href="https://www.youtube.com/@RadekVolf" target="_blank" rel="noopener">https://www.youtube.com/@RadekVolf</a></td>
-</tr>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -183,7 +183,7 @@
         btn_submit: "Odeslat zprávu",
         footer: "Běží na GitHub Pages · Odesílání zajišťuje FormSubmit.",
         downloads_title: "Ke stažení",
-        downloads_hint: "Soubory se načítají automaticky z adresáře /downloads.",
+        downloads_hint: "Soubory se načítají automaticky z adresáře <span class=\"mono\">/downloads</span>.",
         th_name: "Název",
         th_size: "Velikost",
         loading: "Načítám…",
@@ -193,7 +193,7 @@
         th_url: "URL",
         link_home_label: "Web (GitHub Pages)",
         link_steam_label: "Steam: Universe Has No Favorites",
-        link_walker_label: "Walker & Volf"
+        link_walker_label: "Walker & Volf",
         link_youtube_label: "YouTube kanál"
       },
       en: {
@@ -208,7 +208,7 @@
         btn_submit: "Send message",
         footer: "Powered by GitHub Pages · Submission handled by FormSubmit.",
         downloads_title: "Downloads",
-        downloads_hint: "Files are loaded automatically from the /downloads directory.",
+        downloads_hint: "Files are loaded automatically from the <span class=\"mono\">/downloads</span> directory.",
         th_name: "Name",
         th_size: "Size",
         loading: "Loading…",
@@ -218,7 +218,7 @@
         th_url: "URL",
         link_home_label: "Website (GitHub Pages)",
         link_steam_label: "Steam: Universe Has No Favorites",
-        link_walker_label: "Walker & Volf"
+        link_walker_label: "Walker & Volf",
         link_youtube_label: "YouTube channel"
       }
     };
@@ -231,7 +231,12 @@
       document.documentElement.lang = lang;
       els.forEach(el => {
         const key = el.getAttribute("data-i18n");
-        el.textContent = dict[lang][key] || el.textContent;
+        // downloads_hint obsahuje HTML -> použijeme innerHTML
+        if (key === "downloads_hint") {
+          el.innerHTML = dict[lang][key];
+        } else {
+          el.textContent = dict[lang][key] || el.textContent;
+        }
       });
       btnCs.classList.toggle("active", lang === "cs");
       btnEn.classList.toggle("active", lang === "en");
