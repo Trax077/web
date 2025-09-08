@@ -16,10 +16,11 @@
       background:var(--bg); color:var(--fg); margin:0; padding:24px;
     }
     .wrap{
-      max-width:720px; margin:0 auto; background:var(--card);
+      max-width:920px; margin:0 auto; background:var(--card);
       border:1px solid var(--border); border-radius:12px; padding:24px;
     }
     h1{margin:0 0 12px; font-size:26px; line-height:1.25}
+    h2{margin:24px 0 8px; font-size:18px}
     p.hint{color:var(--muted); margin-top:0}
     label{display:block; margin:12px 0 6px}
     input,textarea{
@@ -46,6 +47,21 @@
     .footer{margin-top:18px; color:var(--muted); font-size:12px}
     .checkbox{display:flex; align-items:center; gap:8px; margin-top:12px;}
     .checkbox input[type="checkbox"]{width:auto; height:auto; accent-color:#00ff66;}
+
+    /* tabulky */
+    .table-wrap{overflow-x:auto; border:1px solid var(--border); border-radius:8px}
+    table{width:100%; border-collapse:collapse; min-width:480px}
+    thead{background:#071a12}
+    th, td{padding:10px 12px; border-bottom:1px solid var(--border); text-align:left; vertical-align:top}
+    th{font-weight:700}
+    tr:last-child td{border-bottom:0}
+    .mono{font-family:inherit; word-break:break-word}
+    .right{text-align:right}
+    .muted{color:var(--muted)}
+    .pill{
+      display:inline-block; padding:4px 8px; border:1px solid var(--border); border-radius:999px; font-size:12px; line-height:1;
+      background:#03180f;
+    }
   </style>
 </head>
 <body>
@@ -58,6 +74,7 @@
     <h1 data-i18n="title">Radek Volf – kontaktní formulář</h1>
     <p class="hint" data-i18n="subtitle">Nech vzkaz – přijde mi rovnou do e-mailu.</p>
 
+    <!-- FORM -->
     <form action="https://formsubmit.co/trax@seznam.cz" method="POST" aria-label="Contact form">
       <input type="hidden" name="_subject" value="Nová zpráva z kontaktního formuláře" />
       <input type="hidden" name="_template" value="table" />
@@ -97,12 +114,60 @@
       </div>
     </form>
 
+    <!-- DOWNLOADS -->
+    <h2 data-i18n="downloads_title">Ke stažení</h2>
+    <p class="small muted" data-i18n="downloads_hint">
+      Soubory se načítají automaticky z adresáře <span class="mono pill">/downloads</span> tohoto repozitáře.
+    </p>
+    <div class="table-wrap" id="downloads-wrap">
+      <table aria-describedby="downloads-hint">
+        <thead>
+          <tr>
+            <th data-i18n="th_name">Název</th>
+            <th class="right" data-i18n="th_size">Velikost</th>
+            <th data-i18n="th_links">Odkazy</th>
+          </tr>
+        </thead>
+        <tbody id="downloads-body">
+          <tr><td colspan="3" class="muted" data-i18n="loading">Načítám…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small">
+      <span data-i18n="browse_github">Prohlédnout ve webovém rozhraní GitHubu:</span>
+      <a href="https://github.com/Trax077/web/tree/main/downloads" target="_blank" rel="noopener">/downloads</a>
+    </p>
+
+    <!-- LINKS -->
+    <h2 data-i18n="links_title">Odkazy</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-i18n="th_label">Popis</th>
+            <th data-i18n="th_url">URL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono" data-i18n="link_home_label">Web (GitHub Pages)</td>
+            <td><a href="https://trax077.github.io/web/" target="_blank" rel="noopener">https://trax077.github.io/web/</a></td>
+          </tr>
+          <tr>
+            <td class="mono" data-i18n="link_steam_label">Steam: Universe Has No Favorites</td>
+            <td><a href="https://store.steampowered.com/app/2625600/Universe_Has_No_Favorites" target="_blank" rel="noopener">store.steampowered.com/app/2625600/…</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <div class="footer">
       <span data-i18n="footer">Běží na GitHub Pages · Odesílání zajišťuje FormSubmit.</span>
     </div>
   </div>
 
   <script>
+    // Jednoduché i18n (CZ/EN)
     const dict = {
       cs: {
         title: "Radek Volf – kontaktní formulář",
@@ -114,7 +179,22 @@
         gdpr: "Souhlasím se zpracováním odeslaných údajů za účelem zobrazení/odpovědi.",
         btn_reset: "Vymazat",
         btn_submit: "Odeslat zprávu",
-        footer: "Běží na GitHub Pages · Odesílání zajišťuje FormSubmit."
+        footer: "Běží na GitHub Pages · Odesílání zajišťuje FormSubmit.",
+        downloads_title: "Ke stažení",
+        downloads_hint: "Soubory se načítají automaticky z adresáře /downloads tohoto repozitáře.",
+        th_name: "Název",
+        th_size: "Velikost",
+        th_links: "Odkazy",
+        loading: "Načítám…",
+        link_pages: "GitHub Pages",
+        browse_github: "Prohlédnout ve webovém rozhraní GitHubu:",
+        links_title: "Odkazy",
+        th_label: "Popis",
+        th_url: "URL",
+        link_home_label: "Web (GitHub Pages)",
+        link_steam_label: "Steam: Universe Has No Favorites",
+        link_view: "Zobrazit",
+        link_download: "Stáhnout (raw)"
       },
       en: {
         title: "Radek Volf — Contact Form",
@@ -126,7 +206,22 @@
         gdpr: "I consent to processing my submitted data for displaying/replying purposes.",
         btn_reset: "Clear",
         btn_submit: "Send message",
-        footer: "Powered by GitHub Pages · Submission handled by FormSubmit."
+        footer: "Powered by GitHub Pages · Submission handled by FormSubmit.",
+        downloads_title: "Downloads",
+        downloads_hint: "Files are loaded automatically from the /downloads directory of this repository.",
+        th_name: "Name",
+        th_size: "Size",
+        th_links: "Links",
+        loading: "Loading…",
+        link_pages: "GitHub Pages",
+        browse_github: "Browse on GitHub:",
+        links_title: "Links",
+        th_label: "Label",
+        th_url: "URL",
+        link_home_label: "Website (GitHub Pages)",
+        link_steam_label: "Steam: Universe Has No Favorites",
+        link_view: "View",
+        link_download: "Download (raw)"
       }
     };
 
@@ -138,6 +233,7 @@
       document.documentElement.lang = lang;
       els.forEach(el => {
         const key = el.getAttribute("data-i18n");
+        // některé texty jdou do textContent, některé obsahují HTML (žádný z těchto tady neobsahuje HTML)
         el.textContent = dict[lang][key] || el.textContent;
       });
       btnCs.classList.toggle("active", lang === "cs");
@@ -146,11 +242,100 @@
       btnEn.setAttribute("aria-pressed", lang === "en");
       const email = document.getElementById("email");
       if(email){ email.placeholder = lang === "cs" ? "volitelné" : "optional"; }
+      // přepnout i dynamicky generované odkazy
+      renderDownloads(lang);
     }
 
     btnCs.addEventListener("click", () => setLang("cs"));
     btnEn.addEventListener("click", () => setLang("en"));
+
+    // ---- Downloads loader (GitHub API) ----
+    const GH_OWNER = "Trax077";
+    const GH_REPO  = "web";
+    const GH_PATH  = "downloads";
+    const GH_REF   = "main"; // větev, ze které běží GitHub Pages
+    const PAGES_BASE = "https://trax077.github.io/web";
+
+    async function fetchDownloads(){
+      const api = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_REF}`;
+      const res = await fetch(api, {headers:{'Accept':'application/vnd.github+json'}});
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      /** @type {{name:string,path:string,size:number,download_url:string,type:string}[]} */
+      const data = await res.json();
+      // necháme jen soubory (type === 'file')
+      return data.filter(x => x.type === 'file');
+    }
+
+    function humanSize(bytes){
+      if(bytes === 0) return "0 B";
+      const units = ["B","KB","MB","GB","TB"];
+      const i = Math.floor(Math.log(bytes)/Math.log(1024));
+      return `${(bytes/Math.pow(1024,i)).toFixed(i ? 1 : 0)} ${units[i]}`;
+    }
+
+    function pagesUrlFor(name){
+      // odkaz přes GitHub Pages (pokud je soubor publikován v /downloads)
+      return `${PAGES_BASE}/${GH_PATH}/${encodeURIComponent(name)}`;
+    }
+
+    function renderDownloads(lang){
+      const t = (k)=>dict[lang][k]||k;
+      const tbody = document.getElementById("downloads-body");
+      if(!tbody) return;
+      // Pokud už je načteno, nepřepisuj ručně přidané věci – jen když máme cache
+      if(window.__downloads_cache){
+        tbody.innerHTML = "";
+        window.__downloads_cache.forEach(item=>{
+          const tr = document.createElement("tr");
+          const tdName = document.createElement("td");
+          const tdSize = document.createElement("td");
+          const tdLinks= document.createElement("td");
+
+          tdName.className = "mono";
+          tdName.textContent = item.name;
+
+          tdSize.className = "right";
+          tdSize.textContent = humanSize(item.size);
+
+          const pagesA = document.createElement("a");
+          pagesA.href = pagesUrlFor(item.name);
+          pagesA.target = "_blank";
+          pagesA.rel = "noopener";
+          pagesA.textContent = t("link_view");
+
+          const sep = document.createTextNode(" · ");
+
+          const rawA = document.createElement("a");
+          rawA.href = item.download_url; // raw.githubusercontent
+          rawA.target = "_blank";
+          rawA.rel = "noopener";
+          rawA.textContent = t("link_download");
+
+          tdLinks.append(pagesA, sep, rawA);
+
+          tr.append(tdName, tdSize, tdLinks);
+          tbody.appendChild(tr);
+        });
+      }
+    }
+
+    async function initDownloads(){
+      const tbody = document.getElementById("downloads-body");
+      try{
+        const items = await fetchDownloads();
+        window.__downloads_cache = items;
+        renderDownloads(document.documentElement.lang || "cs");
+        if(items.length === 0){
+          tbody.innerHTML = `<tr><td colspan="3" class="muted">—</td></tr>`;
+        }
+      }catch(err){
+        tbody.innerHTML = `<tr><td colspan="3" class="muted">⚠ ${err}</td></tr>`;
+      }
+    }
+
+    // Start v češtině + načtení souborů
     setLang("cs");
+    initDownloads();
   </script>
 </body>
 </html>
