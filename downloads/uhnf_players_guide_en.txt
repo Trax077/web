@@ -1,0 +1,46 @@
+» Universe Has No Favorites «
+Players Guide
+
+» Key features:
+
+The game combines elements of a text game (interactive fiction) or visual novel with point-and-click mechanics, allowing you to interact with the environment through text links.
+
+» Game controls:
+
+The game is completely controlled by mouse or controller. Simply place the cursor on the highlighted active text and select one or two interaction options.
+
+The game screen is divided into three main areas:
+
+► The top of the screen: Here you will find illustrations and room descriptions. There are three icons:
+
+[Quest log]: Keep track of your quests.
+[Interactive map]: Allows quick travel to distant rooms.
+[Game menu]: In-game with load/save, game settings, etc.
+
+► Action window in the middle: Shows all actions performed and the results of interactions.
+
+► Inventory at the bottom: Move the cursor to the bottom of the screen to open the inventory. Here you can examine items, apply them to other items in the action window, in the room description or directly in your inventory.
+
+You can use the mouse wheel to scroll through the quest log.
+On the map, you can use the mouse wheel to zoom in and out. Click on the room you want to go to (if possible) to activate 'fast travel' to that room.
+
+Keyboard shortcuts for quick navigation:
+
+[A], [W], [S], [D] or [cursor arrows]: Leave the room in the desired direction
+[SPACE]: Access the map
+[TAB]: Open the quest log
+[F5]: Quick save
+[F8]: Quick load
+[ESC]: Open in-game menu
+
+Controller support:
+
+Buttons [A] and [B]: Activate game interaction
+Button [Y]: Access map
+[X] button: Open quest log
+[Directional pad]: Leave room in desired direction
+[Left/right thumbstick]: Move cursor
+[Start button]: Open in-game menu
+[Left/Right Trigger]: Hold the trigger to activate the magnet, which will automatically move the cursor to the next highlighted active text according to the direction you selected with the thumbstick.
+
+In the quest log and on the map, you can use the thumbstick to scroll through the list or zoom in/out on the map.
