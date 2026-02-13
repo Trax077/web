@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="cs">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Radek Volf – kontaktní formulář. Zprávy jsou doručeny rovnou do e-mailu.">
+  <meta name="description" content="Radek Volf - contact form. Messages are delivered straight to my email." />
   <title>Radek Volf</title>
   <style>
     :root{
@@ -27,6 +27,10 @@
       width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:8px; background:#030303; color:var(--fg);
       outline:none;
     }
+    input:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible{
+      box-shadow:0 0 0 2px #001a0f, 0 0 0 4px var(--accent);
+      border-color:var(--accent);
+    }
     textarea{min-height:140px; resize:vertical}
     .row{display:flex; gap:12px; flex-wrap:wrap}
     .row > div{flex:1 1 240px}
@@ -48,7 +52,6 @@
     .checkbox{display:flex; align-items:center; gap:8px; margin-top:12px;}
     .checkbox input[type="checkbox"]{width:auto; height:auto; accent-color:#00ff66;}
 
-    /* tabulky */
     .table-wrap{overflow-x:auto; border:1px solid var(--border); border-radius:8px}
     table{width:100%; border-collapse:collapse; min-width:420px}
     thead{background:#071a12}
@@ -60,111 +63,107 @@
   </style>
 </head>
 <body>
-  <div class="wrap" role="main">
+  <main class="wrap">
     <div class="lang-switch" aria-label="Language switch">
-      <button type="button" id="btn-cs" class="active" aria-pressed="true">Čeština</button>
-      <button type="button" id="btn-en" aria-pressed="false">English</button>
+      <button type="button" id="btn-en" class="active" aria-pressed="true">English</button>
+      <button type="button" id="btn-cs" aria-pressed="false">Čeština</button>
     </div>
 
-    <h1 data-i18n="title">Radek Volf – kontaktní formulář</h1>
-    <p class="hint" data-i18n="subtitle">Nech vzkaz – přijde mi rovnou do e-mailu.</p>
+    <h1 data-i18n="title">Radek Volf - Contact Form</h1>
+    <p class="hint" data-i18n="subtitle">Leave a message - it will arrive straight to my email.</p>
 
-    <!-- FORM -->
     <form action="https://formsubmit.co/86ebf25c9a4f010e50f748d5181b495a" method="POST" aria-label="Contact form">
-      <input type="hidden" name="_subject" value="Nová zpráva z kontaktního formuláře" />
+      <input type="hidden" name="_subject" value="New message from website contact form" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="true" />
       <input type="hidden" name="_next" value="https://trax077.github.io/web/thanks.html" />
 
-      <!-- Honeypot -->
       <div class="hp" aria-hidden="true">
         <label>Leave empty: <input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label>
       </div>
 
       <div class="row">
         <div>
-          <label for="name"><span data-i18n="label_name">Jméno</span> <span class="required">*</span></label>
+          <label for="name"><span data-i18n="label_name">Name</span> <span class="required">*</span></label>
           <input id="name" name="name" type="text" required minlength="2" maxlength="80" autocomplete="name" aria-required="true" />
         </div>
         <div>
-          <label for="email"><span data-i18n="label_email">E-mail (pro odpověď)</span></label>
+          <label for="email"><span data-i18n="label_email">Email (for reply)</span></label>
           <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="" aria-describedby="emailHelp" />
-          <div id="emailHelp" class="small" data-i18n="email_hint">Volitelné. Slouží jen k odpovědi na vaši zprávu.</div>
+          <div id="emailHelp" class="small" data-i18n="email_hint">Optional. Used only to reply to your message.</div>
         </div>
       </div>
 
-      <label for="message"><span data-i18n="label_message">Zpráva</span> <span class="required">*</span></label>
+      <label for="message"><span data-i18n="label_message">Message</span> <span class="required">*</span></label>
       <textarea id="message" name="message" required minlength="5" maxlength="5000" aria-required="true"></textarea>
 
       <div class="checkbox">
-        <input type="checkbox" id="gdpr" required aria-required="true" />
+        <input type="checkbox" id="gdpr" name="consent" value="yes" required aria-required="true" />
         <label for="gdpr" class="small" data-i18n="gdpr">
-          Souhlasím se zpracováním odeslaných údajů za účelem zobrazení/odpovědi.
+          I consent to processing my submitted data for displaying/replying purposes.
         </label>
       </div>
 
       <div class="actions">
-        <button type="reset" data-i18n="btn_reset">Vymazat</button>
-        <button type="submit" data-i18n="btn_submit">Odeslat zprávu</button>
+        <button type="reset" data-i18n="btn_reset">Clear</button>
+        <button type="submit" data-i18n="btn_submit">Send message</button>
       </div>
     </form>
 
-    <!-- DOWNLOADS -->
-    <h2 data-i18n="downloads_title">Ke stažení</h2>
+    <h2 data-i18n="downloads_title">Downloads</h2>
     <p id="downloads-hint" class="small" style="color:var(--muted)" data-i18n="downloads_hint">
-      Soubory se načítají automaticky z adresáře <span class="mono">/downloads</span>.
+      Files are loaded automatically from the <span class="mono">/downloads</span> directory.
     </p>
     <div class="table-wrap" id="downloads-wrap">
       <table aria-describedby="downloads-hint">
         <thead>
           <tr>
-            <th data-i18n="th_name">Název</th>
-            <th class="right" data-i18n="th_size">Velikost</th>
+            <th data-i18n="th_name">Name</th>
+            <th class="right" data-i18n="th_size">Size</th>
           </tr>
         </thead>
         <tbody id="downloads-body">
-          <tr><td colspan="2" class="small" style="color:var(--muted)" data-i18n="loading">Načítám…</td></tr>
+          <tr><td colspan="2" class="small" style="color:var(--muted)" data-i18n="loading">Loading...</td></tr>
         </tbody>
       </table>
     </div>
     <p class="small">
-      <span data-i18n="browse_github">Prohlédnout ve webovém rozhraní GitHubu:</span>
+      <span data-i18n="browse_github">Browse on GitHub:</span>
       <a href="https://github.com/Trax077/web/tree/main/downloads" target="_blank" rel="noopener">/downloads</a>
     </p>
 
-    <!-- LINKS -->
-    <h2 data-i18n="links_title">Odkazy</h2>
+    <h2 data-i18n="links_title">Links</h2>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th data-i18n="th_label">Popis</th>
+            <th data-i18n="th_label">Label</th>
             <th data-i18n="th_url">URL</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="mono" data-i18n="link_home_label">Web (GitHub Pages)</td>
+            <td class="mono" data-i18n="link_home_label">This website</td>
             <td><a href="https://trax077.github.io/web" target="_blank" rel="noopener">trax077.github.io/web</a></td>
           </tr>
           <tr>
-            <td class="mono" data-i18n="link_mobygames_label">Můj profil herního vývojáře</td>
+            <td class="mono" data-i18n="link_mobygames_label">My game developer profile</td>
             <td><a href="https://www.mobygames.com/person/151531/radek-volf/" target="_blank" rel="noopener">mobygames.com/person/151531/radek-volf</a></td>
           </tr>
           <tr>
-            <td class="mono" data-i18n="link_steam_darkward">Steam: Darkward</td>
+            <td class="mono" data-i18n="link_steam_darkward">Darkward (my free game on Steam)</td>
             <td><a href="https://store.steampowered.com/app/4195220" target="_blank" rel="noopener">store.steampowered.com/app/4195220</a></td>
           </tr>
           <tr>
-            <td class="mono" data-i18n="link_steam_uhnf">Steam: Universe Has No Favorites</td>
+            <td class="mono" data-i18n="link_steam_uhnf">Universe Has No Favorites (my game on Steam)</td>
             <td><a href="https://store.steampowered.com/app/2625600" target="_blank" rel="noopener">store.steampowered.com/app/2625600</a></td>
           </tr>
           <tr>
-            <td class="mono" data-i18n="link_walker_label">Walker & Volf</td>
+            <td class="mono" data-i18n="link_walker_label">Walker & Volf - audiobook publisher</td>
             <td><a href="https://www.walkeravolf.cz/" target="_blank" rel="noopener">www.walkeravolf.cz</a></td>
           </tr>
           <tr>
-            <td class="mono" data-i18n="link_youtube_label">YouTube kanál</td>
+            <td class="mono" data-i18n="link_youtube_label">My YouTube channel</td>
             <td><a href="https://www.youtube.com/@RadekVolf" target="_blank" rel="noopener">youtube.com/@RadekVolf</a></td>
           </tr>
         </tbody>
@@ -172,43 +171,15 @@
     </div>
 
     <div class="footer">
-      <span data-i18n="footer">Běží na GitHub Pages · Odesílání zajišťuje FormSubmit.</span>
+      <span data-i18n="footer">Powered by GitHub Pages - Submission handled by FormSubmit.</span>
     </div>
-  </div>
+  </main>
 
   <script>
-    // Jednoduché i18n (CZ/EN)
     const dict = {
-      cs: {
-        title: "Radek Volf – kontaktní formulář",
-        subtitle: "Nech vzkaz – přijde mi rovnou do e-mailu.",
-        label_name: "Jméno",
-        label_email: "E-mail (pro odpověď)",
-        email_hint: "Volitelné. Slouží jen k odpovědi na vaši zprávu.",
-        label_message: "Zpráva",
-        gdpr: "Souhlasím se zpracováním odeslaných údajů za účelem zobrazení/odpovědi.",
-        btn_reset: "Vymazat",
-        btn_submit: "Odeslat zprávu",
-        footer: "Běží na GitHub Pages · Odesílání zajišťuje FormSubmit.",
-        downloads_title: "Ke stažení",
-        downloads_hint: "Soubory se načítají automaticky z adresáře <span class=\"mono\">/downloads</span>.",
-        th_name: "Název",
-        th_size: "Velikost",
-        loading: "Načítám…",
-        browse_github: "Prohlédnout ve webovém rozhraní GitHubu:",
-        links_title: "Odkazy",
-        th_label: "Popis",
-        th_url: "URL",
-        link_home_label: "Tato WWW stránka",
-        link_steam_darkward: "Darkward (moje hra zdarma na Steamu)",
-        link_steam_uhnf: "Vesmír nezná vyvolených (moje hra na Steamu)",
-        link_walker_label: "Walker & Volf - nakladatelství audioknih",
-        link_youtube_label: "Můj YouTube kanál",
-        link_mobygames_label: "Můj profil herního vývojáře"
-      },
       en: {
-        title: "Radek Volf — Contact Form",
-        subtitle: "Leave a message — it will arrive straight to my email.",
+        title: "Radek Volf - Contact Form",
+        subtitle: "Leave a message - it will arrive straight to my email.",
         label_name: "Name",
         label_email: "Email (for reply)",
         email_hint: "Optional. Used only to reply to your message.",
@@ -216,12 +187,14 @@
         gdpr: "I consent to processing my submitted data for displaying/replying purposes.",
         btn_reset: "Clear",
         btn_submit: "Send message",
-        footer: "Powered by GitHub Pages · Submission handled by FormSubmit.",
+        footer: "Powered by GitHub Pages - Submission handled by FormSubmit.",
         downloads_title: "Downloads",
         downloads_hint: "Files are loaded automatically from the <span class=\"mono\">/downloads</span> directory.",
         th_name: "Name",
         th_size: "Size",
-        loading: "Loading…",
+        loading: "Loading...",
+        downloads_empty: "-",
+        downloads_error: "Could not load downloads",
         browse_github: "Browse on GitHub:",
         links_title: "Links",
         th_label: "Label",
@@ -232,6 +205,35 @@
         link_walker_label: "Walker & Volf - audiobook publisher",
         link_youtube_label: "My YouTube channel",
         link_mobygames_label: "My game developer profile"
+      },
+      cs: {
+        title: "Radek Volf - kontaktní formulář",
+        subtitle: "Nech vzkaz - přijde mi rovnou do e-mailu.",
+        label_name: "Jméno",
+        label_email: "E-mail (pro odpověď)",
+        email_hint: "Volitelné. Slouží jen k odpovědi na vaši zprávu.",
+        label_message: "Zpráva",
+        gdpr: "Souhlasím se zpracováním odeslaných údajů za účelem zobrazení a odpovědi.",
+        btn_reset: "Vymazat",
+        btn_submit: "Odeslat zprávu",
+        footer: "Běží na GitHub Pages - Odesílání zajišťuje FormSubmit.",
+        downloads_title: "Ke stažení",
+        downloads_hint: "Soubory se načítají automaticky z adresáře <span class=\"mono\">/downloads</span>.",
+        th_name: "Název",
+        th_size: "Velikost",
+        loading: "Načítám...",
+        downloads_empty: "-",
+        downloads_error: "Nepodařilo se načíst soubory ke stažení",
+        browse_github: "Prohlédnout ve webovém rozhraní GitHubu:",
+        links_title: "Odkazy",
+        th_label: "Popis",
+        th_url: "URL",
+        link_home_label: "Tato webová stránka",
+        link_steam_darkward: "Darkward (moje hra zdarma na Steamu)",
+        link_steam_uhnf: "Universe Has No Favorites (moje hra na Steamu)",
+        link_walker_label: "Walker & Volf - nakladatelství audioknih",
+        link_youtube_label: "Můj YouTube kanál",
+        link_mobygames_label: "Můj profil herního vývojáře"
       }
     };
 
@@ -243,7 +245,6 @@
       document.documentElement.lang = lang;
       els.forEach(el => {
         const key = el.getAttribute("data-i18n");
-        // downloads_hint obsahuje HTML -> použijeme innerHTML
         if (key === "downloads_hint") {
           el.innerHTML = dict[lang][key];
         } else {
@@ -252,30 +253,28 @@
       });
       btnCs.classList.toggle("active", lang === "cs");
       btnEn.classList.toggle("active", lang === "en");
-      btnCs.setAttribute("aria-pressed", lang === "cs");
-      btnEn.setAttribute("aria-pressed", lang === "en");
+      btnCs.setAttribute("aria-pressed", String(lang === "cs"));
+      btnEn.setAttribute("aria-pressed", String(lang === "en"));
       const email = document.getElementById("email");
       if(email){ email.placeholder = lang === "cs" ? "volitelné" : "optional"; }
-      renderDownloads(lang);
+      renderDownloads();
     }
 
     btnCs.addEventListener("click", () => setLang("cs"));
     btnEn.addEventListener("click", () => setLang("en"));
 
-    // ---- Downloads loader (GitHub API) ----
     const GH_OWNER = "Trax077";
     const GH_REPO  = "web";
     const GH_PATH  = "downloads";
-    const GH_REF   = "main"; // větev, ze které běží GitHub Pages
+    const GH_REF   = "main";
     const PAGES_BASE = "https://trax077.github.io/web";
 
     async function fetchDownloads(){
       const api = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_REF}`;
-      const res = await fetch(api, {headers:{'Accept':'application/vnd.github+json'}});
+      const res = await fetch(api, {headers:{"Accept":"application/vnd.github+json"}});
       if(!res.ok) throw new Error(`HTTP ${res.status}`);
-      /** @type {{name:string,path:string,size:number,download_url:string,type:string}[]} */
       const data = await res.json();
-      return data.filter(x => x.type === 'file');
+      return data.filter(x => x.type === "file");
     }
 
     function humanSize(bytes){
@@ -286,15 +285,22 @@
     }
 
     function pagesUrlFor(name){
-      // odkaz přes GitHub Pages (ne raw)
       return `${PAGES_BASE}/${GH_PATH}/${encodeURIComponent(name)}`;
     }
 
-    function renderDownloads(lang){
+    function renderDownloads(){
       const tbody = document.getElementById("downloads-body");
-      if(!tbody || !window.__downloads_cache) return;
+      const lang = document.documentElement.lang || "en";
+      if(!tbody) return;
+
+      if(window.__downloads_error){
+        tbody.innerHTML = `<tr><td colspan="2" class="small" style="color:var(--muted)">${dict[lang].downloads_error}: ${window.__downloads_error}</td></tr>`;
+        return;
+      }
+
+      if(!window.__downloads_cache) return;
       tbody.innerHTML = "";
-      window.__downloads_cache.forEach(item=>{
+      window.__downloads_cache.forEach(item => {
         const tr = document.createElement("tr");
 
         const tdName = document.createElement("td");
@@ -303,7 +309,7 @@
         a.href = pagesUrlFor(item.name);
         a.target = "_blank";
         a.rel = "noopener";
-        a.textContent = item.name;   // pouze klikací název
+        a.textContent = item.name;
         tdName.appendChild(a);
 
         const tdSize = document.createElement("td");
@@ -315,23 +321,24 @@
       });
 
       if(window.__downloads_cache.length === 0){
-        tbody.innerHTML = `<tr><td colspan="2" class="small" style="color:var(--muted)">—</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="2" class="small" style="color:var(--muted)">${dict[lang].downloads_empty}</td></tr>`;
       }
     }
 
     async function initDownloads(){
-      const tbody = document.getElementById("downloads-body");
       try{
         const items = await fetchDownloads();
+        window.__downloads_error = "";
         window.__downloads_cache = items;
-        renderDownloads(document.documentElement.lang || "cs");
+        renderDownloads();
       }catch(err){
-        tbody.innerHTML = `<tr><td colspan="2" class="small" style="color:var(--muted)">⚠ ${err}</td></tr>`;
+        window.__downloads_cache = [];
+        window.__downloads_error = String(err);
+        renderDownloads();
       }
     }
 
-    // Start v češtině + načtení souborů
-    setLang("cs");
+    setLang("en");
     initDownloads();
   </script>
 </body>

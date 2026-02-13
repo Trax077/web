@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="cs">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta http-equiv="refresh" content="8; url=https://trax077.github.io/web" />
-  <title>Děkujeme</title>
+  <title>Thank You</title>
   <style>
     :root{--bg:#000; --fg:#00ff66; --muted:#2a8a57; --card:#0a0a0a; --border:#184c34; --accent:#00ff66;}
     body{
@@ -18,31 +18,32 @@
     .lang-switch button{border:1px solid var(--border); border-radius:6px; padding:6px 10px; background:#0d0d0d; color:var(--fg); cursor:pointer;}
     .lang-switch button.active{border-color:var(--accent)}
     a{color:var(--accent); text-decoration:none}
+    a:focus-visible, button:focus-visible{box-shadow:0 0 0 2px #001a0f, 0 0 0 4px var(--accent); border-color:var(--accent)}
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="lang-switch" aria-label="Language switch">
-      <button type="button" id="btn-cs" class="active" aria-pressed="true">Čeština</button>
-      <button type="button" id="btn-en" aria-pressed="false">English</button>
+      <button type="button" id="btn-en" class="active" aria-pressed="true">English</button>
+      <button type="button" id="btn-cs" aria-pressed="false">Čeština</button>
     </div>
 
-    <h1 data-i18n="title">Děkujeme!</h1>
-    <p data-i18n="text">Vaše zpráva byla odeslána. Brzy se ozvu.</p>
-    <p data-i18n="redirect">Za chvíli budete přesměrováni zpět. <a href="https://trax077.github.io/web">Zpět na hlavní stránku</a>.</p>
+    <h1 data-i18n="title">Thank you!</h1>
+    <p data-i18n="text">Your message has been sent. I will get back to you soon.</p>
+    <p data-i18n="redirect">You will be redirected shortly. <a href="https://trax077.github.io/web">Back to the homepage</a>.</p>
   </div>
 
   <script>
     const dict = {
-      cs: {
-        title: "Děkujeme!",
-        text: "Vaše zpráva byla odeslána. Brzy se ozvu.",
-        redirect: 'Za chvíli budete přesměrováni zpět. <a href="https://trax077.github.io/web">Zpět na hlavní stránku</a>.'
-      },
       en: {
         title: "Thank you!",
         text: "Your message has been sent. I will get back to you soon.",
-        redirect: 'You’ll be redirected shortly. <a href="https://trax077.github.io/web">Back to the homepage</a>.'
+        redirect: "You will be redirected shortly. <a href=\"https://trax077.github.io/web\">Back to the homepage</a>."
+      },
+      cs: {
+        title: "Děkujeme!",
+        text: "Vaše zpráva byla odeslána. Brzy se ozvu.",
+        redirect: "Za chvíli budete přesměrováni zpět. <a href=\"https://trax077.github.io/web\">Zpět na hlavní stránku</a>."
       }
     };
 
@@ -59,13 +60,13 @@
       });
       btnCs.classList.toggle("active", lang === "cs");
       btnEn.classList.toggle("active", lang === "en");
-      btnCs.setAttribute("aria-pressed", lang === "cs");
-      btnEn.setAttribute("aria-pressed", lang === "en");
+      btnCs.setAttribute("aria-pressed", String(lang === "cs"));
+      btnEn.setAttribute("aria-pressed", String(lang === "en"));
     }
 
     btnCs.addEventListener("click", () => setLang("cs"));
     btnEn.addEventListener("click", () => setLang("en"));
-    setLang("cs");
+    setLang("en");
   </script>
 </body>
 </html>
