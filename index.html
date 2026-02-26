@@ -110,28 +110,6 @@
       </div>
     </form>
 
-    <h2 data-i18n="downloads_title">Downloads</h2>
-    <p id="downloads-hint" class="small" style="color:var(--muted)" data-i18n="downloads_hint">
-      Files are loaded automatically from the <span class="mono">/downloads</span> directory.
-    </p>
-    <div class="table-wrap" id="downloads-wrap">
-      <table aria-describedby="downloads-hint">
-        <thead>
-          <tr>
-            <th data-i18n="th_name">Name</th>
-            <th class="right" data-i18n="th_size">Size</th>
-          </tr>
-        </thead>
-        <tbody id="downloads-body">
-          <tr><td colspan="2" class="small" style="color:var(--muted)" data-i18n="loading">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="small">
-      <span data-i18n="browse_github">Browse on GitHub:</span>
-      <a href="https://github.com/Trax077/web/tree/main/downloads" target="_blank" rel="noopener">/downloads</a>
-    </p>
-
     <h2 data-i18n="links_title">Links</h2>
     <div class="table-wrap">
       <table>
@@ -142,10 +120,6 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="mono" data-i18n="link_home_label">This website</td>
-            <td><a href="https://trax077.github.io/web" target="_blank" rel="noopener">trax077.github.io/web</a></td>
-          </tr>
           <tr>
             <td class="mono" data-i18n="link_mobygames_label">My game developer profile</td>
             <td><a href="https://www.mobygames.com/person/151531/radek-volf/" target="_blank" rel="noopener">mobygames.com/person/151531/radek-volf</a></td>
@@ -188,18 +162,9 @@
         btn_reset: "Clear",
         btn_submit: "Send message",
         footer: "Powered by GitHub Pages - Submission handled by FormSubmit.",
-        downloads_title: "Downloads",
-        downloads_hint: "Files are loaded automatically from the <span class=\"mono\">/downloads</span> directory.",
-        th_name: "Name",
-        th_size: "Size",
-        loading: "Loading...",
-        downloads_empty: "-",
-        downloads_error: "Could not load downloads",
-        browse_github: "Browse on GitHub:",
         links_title: "Links",
         th_label: "Label",
         th_url: "URL",
-        link_home_label: "This website",
         link_steam_darkward: "Darkward (my free game on Steam)",
         link_steam_uhnf: "Universe Has No Favorites (my game on Steam)",
         link_walker_label: "Walker & Volf - audiobook publisher",
@@ -217,18 +182,9 @@
         btn_reset: "Vymazat",
         btn_submit: "Odeslat zprávu",
         footer: "Běží na GitHub Pages - Odesílání zajišťuje FormSubmit.",
-        downloads_title: "Ke stažení",
-        downloads_hint: "Soubory se načítají automaticky z adresáře <span class=\"mono\">/downloads</span>.",
-        th_name: "Název",
-        th_size: "Velikost",
-        loading: "Načítám...",
-        downloads_empty: "-",
-        downloads_error: "Nepodařilo se načíst soubory ke stažení",
-        browse_github: "Prohlédnout ve webovém rozhraní GitHubu:",
         links_title: "Odkazy",
         th_label: "Popis",
         th_url: "URL",
-        link_home_label: "Tato webová stránka",
         link_steam_darkward: "Darkward (moje hra zdarma na Steamu)",
         link_steam_uhnf: "Universe Has No Favorites (moje hra na Steamu)",
         link_walker_label: "Walker & Volf - nakladatelství audioknih",
@@ -245,11 +201,7 @@
       document.documentElement.lang = lang;
       els.forEach(el => {
         const key = el.getAttribute("data-i18n");
-        if (key === "downloads_hint") {
-          el.innerHTML = dict[lang][key];
-        } else {
-          el.textContent = dict[lang][key] || el.textContent;
-        }
+        el.textContent = dict[lang][key] || el.textContent;
       });
       btnCs.classList.toggle("active", lang === "cs");
       btnEn.classList.toggle("active", lang === "en");
@@ -257,89 +209,12 @@
       btnEn.setAttribute("aria-pressed", String(lang === "en"));
       const email = document.getElementById("email");
       if(email){ email.placeholder = lang === "cs" ? "volitelné" : "optional"; }
-      renderDownloads();
     }
 
     btnCs.addEventListener("click", () => setLang("cs"));
     btnEn.addEventListener("click", () => setLang("en"));
 
-    const GH_OWNER = "Trax077";
-    const GH_REPO  = "web";
-    const GH_PATH  = "downloads";
-    const GH_REF   = "main";
-    const PAGES_BASE = "https://trax077.github.io/web";
-
-    async function fetchDownloads(){
-      const api = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_REF}`;
-      const res = await fetch(api, {headers:{"Accept":"application/vnd.github+json"}});
-      if(!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      return data.filter(x => x.type === "file");
-    }
-
-    function humanSize(bytes){
-      if(bytes === 0) return "0 B";
-      const units = ["B","KB","MB","GB","TB"];
-      const i = Math.floor(Math.log(bytes)/Math.log(1024));
-      return `${(bytes/Math.pow(1024,i)).toFixed(i ? 1 : 0)} ${units[i]}`;
-    }
-
-    function pagesUrlFor(name){
-      return `${PAGES_BASE}/${GH_PATH}/${encodeURIComponent(name)}`;
-    }
-
-    function renderDownloads(){
-      const tbody = document.getElementById("downloads-body");
-      const lang = document.documentElement.lang || "en";
-      if(!tbody) return;
-
-      if(window.__downloads_error){
-        tbody.innerHTML = `<tr><td colspan="2" class="small" style="color:var(--muted)">${dict[lang].downloads_error}: ${window.__downloads_error}</td></tr>`;
-        return;
-      }
-
-      if(!window.__downloads_cache) return;
-      tbody.innerHTML = "";
-      window.__downloads_cache.forEach(item => {
-        const tr = document.createElement("tr");
-
-        const tdName = document.createElement("td");
-        tdName.className = "mono";
-        const a = document.createElement("a");
-        a.href = pagesUrlFor(item.name);
-        a.target = "_blank";
-        a.rel = "noopener";
-        a.textContent = item.name;
-        tdName.appendChild(a);
-
-        const tdSize = document.createElement("td");
-        tdSize.className = "right";
-        tdSize.textContent = humanSize(item.size);
-
-        tr.append(tdName, tdSize);
-        tbody.appendChild(tr);
-      });
-
-      if(window.__downloads_cache.length === 0){
-        tbody.innerHTML = `<tr><td colspan="2" class="small" style="color:var(--muted)">${dict[lang].downloads_empty}</td></tr>`;
-      }
-    }
-
-    async function initDownloads(){
-      try{
-        const items = await fetchDownloads();
-        window.__downloads_error = "";
-        window.__downloads_cache = items;
-        renderDownloads();
-      }catch(err){
-        window.__downloads_cache = [];
-        window.__downloads_error = String(err);
-        renderDownloads();
-      }
-    }
-
     setLang("en");
-    initDownloads();
   </script>
 </body>
 </html>
